@@ -1,0 +1,42 @@
+import java.util.*;
+
+public class QuizGame {
+
+
+
+        public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+            QuickService quizService = new QuickService();
+
+            System.out.print("how many question do  you want to answer ? ");
+            int numQuestion =scanner.nextInt();
+            List<Question> questions = quizService.fetchQuestions(numQuestion);
+            int score = 0;
+
+            for (int i = 0; i < questions.size(); i++) {
+                Question q = questions.get(i);
+                System.out.println("Question " + (i + 1) + ": " + q.getQuestion());
+
+                List<String> options = new ArrayList<>(q.getIncorrectAnswers());
+                options.add(q.getCorrectAnswer());
+                Collections.shuffle(options);
+
+                for (int j = 0; j < options.size(); j++) {
+                    System.out.println((j + 1) + ". " + options.get(j));
+                }
+
+                System.out.print("Your answer (1-" + options.size() + "): ");
+                int answer = scanner.nextInt();
+
+                if (options.get(answer - 1).equals(q.getCorrectAnswer())) {
+                    System.out.println("Correct!\n");
+                    score++;
+                } else {
+                    System.out.println("Wrong! Correct answer: " + q.getCorrectAnswer() + "\n");
+                }
+            }
+
+            System.out.println("You scored: " + score + "/" + questions.size());
+            scanner.close();
+        }
+    }
